@@ -37,11 +37,19 @@ with st.expander("**How to Use the Dashboard** 📚"):
     2. **Visualize Data** - From the dropdown, select a visualization type to view patterns.
     """)
 
-selected_age_group = st.sidebar.multiselect("Select Age Groups 🕰️", canada['Age group'].unique().tolist(), default=canada['Age group'].unique().tolist())
+Ages =  canada['Age group'].unique()
+Youngsters =  Ages[0],Ages[6], Ages[7]
+Age_groups = {
+  Youngsters :'Young', 
+  Ages[2]: 'All ages',
+  Ages[3]:'Middle aged',
+  Ages[8]:'Old'}
+
+selected_age_group = st.sidebar.multiselect("Select Age Groups 🕰️",[age for age in Ages], format_func=lambda age:Age_groups.get(age,age))
 if not selected_age_group:
     st.warning("Please select an age group from the sidebar ⚠️")
     st.stop()
-filtered_df = canada[canada['Age group'].isin(selected_age_group)]
+#filtered_df = canada[canada['Age group'].isin(selected_age_group)]
 
 area = canada['GEO'].unique().tolist()
 selected_area = st.sidebar.multiselect("Select Geografical Area 🌎", area, default=area)
