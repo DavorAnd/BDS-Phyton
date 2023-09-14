@@ -17,15 +17,15 @@ def load_data():
 
 canada, gdf = load_data()
 
-st.title("Unemployment in Canada Dashbord")
+st.title("Public showcase of lazy Canadians")
 st.sidebar.header("Filters 📊")
 
 st.markdown("""
-            Welcome to the Canada Employment Dashboard.
+            Welcome to the lazy Canada dashboard.
 """)
 with st.expander("📊 **Objective**"):
                  st.markdown("""
-At the heart of this dashboard is the mission to visually decode data, equipping HR experts with insights to tackle these queries:
+At the heart of this dashboard the data about data about Canadinas with emphasis on lazy part of population, and hope that it shows what it should :
 - Are there different unemployment rates for the different geografical areas of Canada?
 - How has the unemployment rate developed over time?
 """
@@ -36,19 +36,21 @@ with st.expander("**How to Use the Dashboard** 📚"):
     1. **Filter Data** - Use the sidebar filters to narrow down specific datasets.
     2. **Visualize Data** - From the dropdown, select a visualization type to view patterns.
     """)
-
+# age groups
 age_group_cat = {
       'Young':['15 to 24 years','15 to 19 years','20 to 24 years'],
       'Old':['55 to 64 years'],
       'Middle Age' : ['25 to 54 years'],
       'All Ages' : ['15 years and over']
 }
-
+#Selection for age groups in the sidebar
 selected_age_group = st.sidebar.multiselect("Select Age Groups 🕰️",list(age_group_cat.keys()))
 if not selected_age_group:
     st.warning("Please select an age group from the sidebar ⚠️")
     st.stop()
 filtered_df =canada[canada['Age group'].isin([age for category in selected_age_group for age in age_group_cat[category]])]
+
+# Geo selection
 
 area = canada['GEO'].unique().tolist()
 selected_area = st.sidebar.multiselect("Select Geografical Area 🌎", area, default=area)
@@ -57,13 +59,15 @@ if not selected_area:
     st.stop()
 filtered_df = filtered_df[filtered_df['GEO'].isin(selected_area)]
 
-st.header("Unemployment Analysis 📊")
 
 # Dropdown to select the type of visualization - make a name for each chart.
+st.header("Unemployment Analysis 📊")
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 
-    ["Unemployment by Age Group"] #stacked bar chart    
+    ["Unemployment by Age Group"]     
 )
+
+#Work until here -- missing the types of plots and polt code
 
 if visualization_option == "Unemployment by Age Group":
     # Bar chart for unemployment by age group
