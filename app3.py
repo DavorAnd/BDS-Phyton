@@ -223,5 +223,5 @@ with st.expander("**How to Use the Map below** 🌎"):
 # the end 
 
 with st.expander("**Example of lazy Canadians in their natural habitat** 📚"):
-    st.markdown("**Doggo** (doggo.jpg)")
+    st.markdown("![Doggo](doggo.jpg)")
 
