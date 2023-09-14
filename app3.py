@@ -30,6 +30,7 @@ with st.expander("📊 **Objective**"):
                  st.markdown("""
 Ever wondered if Canadians are embracing the fine art of lounging around in their picturesque locales? 🇨🇦   Well, we've got the scoop for you! Dive into our vibrant dashboard, where we unravel the mysteries surrounding the "chill" segment of the Canadian population. 🍁
 In this thrilling saga, we embark on a journey to discover:
+                             
 🌎 Are there pockets in Canada's HUGE and diverse landscapes where people are mastering the art of relaxation a bit more than others? Let's explore the unemployment rates across different geographical zones of Canada!
 
 📈 Buckle up as we time travel through the ridiculously big (almost like 🇨🇦) data set to history to witness the evolution of unemployment rates in Canada.
