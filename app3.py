@@ -66,7 +66,10 @@ if not selected_area:
 filtered_df = filtered_df[filtered_df['GEO'].isin(selected_area)]
 #Type of employment 
 
-
+grouped_data = canada.groupby('GEO')[['Employment', 'Unemployment']].sum().reset_index()
+grouped_data['Total_Workforce'] = grouped_data['Employment'] + grouped_data['Unemployment']
+grouped_data['Employment_Percentage'] = (grouped_data['Employment'] / grouped_data['Total_Workforce']) * 100
+grouped_data['Unemployment_Percentage'] = (grouped_data['Unemployment'] / grouped_data['Total_Workforce']) * 100
 
 
 filtered_canada2 =filtered_df[filtered_df['REF_DATE'].str.endswith("12")]
@@ -82,17 +85,12 @@ alt.Chart(filtered_canada2).mark_line().encode(
 )
 
 # Dropdown to select the type of visualization - make a name for each chart.
-
-
-#Work until here -- missing the types of plots and polt code---
-
-
-# Dropdown to select the type of visualization - make a name for each chart.
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 
     ["The density of employment rate for different age groups", 
      "The density of employment rate for different geographical areas", 
-     "Development of Unemployment by Geographical Area"] #stacked bar chart    
+     "Development of Unemployment by Geographical Area",
+     "Employment and Unemployment Percentage by Province in Canada"] #stacked bar chart    
 )
 
 
@@ -118,7 +116,34 @@ elif visualization_option == "Development of Unemployment by Geographical Area":
     height=300,
     )
     st.altair_chart(chart2, use_container_width=True)
+elif visualization_option == "Employment and Unemployment Percentage by Province in Canada":
+    st.subheader('Bar Chart')
+    
+    # Setting the positions and width for the bars
+    pos = list(range(len(grouped_data['GEO']))) 
+    width = 0.75 
 
+    # Plotting the bars
+    fig, ax = plt.subplots(figsize=(15, 7))
+    plt.bar(pos, grouped_data['Employment_Percentage'], width, alpha=0.75, color='#57a773', label='Employment')
+    plt.bar(pos, grouped_data['Unemployment_Percentage'], width, bottom=grouped_data['Employment_Percentage'], alpha=0.75, color='#ff6f61', label='Unemployment')
+    
+    # Customize the chart
+    ax.set_ylabel('Percentage (%)', fontsize=12)
+    ax.set_xticks(pos)
+    ax.set_xticklabels(grouped_data['GEO'], rotation=90, fontsize=12)
+    plt.xlim(min(pos)-width, max(pos)+width*4)
+    plt.ylim([0, 100])
+    plt.legend(loc='upper left', fontsize=12)
+    plt.grid(axis='y')
+    plt.axhline(y=50, color='gray', linestyle='--', linewidth=0.7)
+    
+    # Adding data labels
+    for i, val in enumerate(grouped_data['Employment_Percentage']):
+        plt.text(i, val/2, f"{val:.2f}%", ha='center', va='center', fontsize=10, color='white')
+        plt.text(i, val + grouped_data['Unemployment_Percentage'][i]/2, f"{grouped_data['Unemployment_Percentage'][i]:.2f}%", ha='center', va='center', fontsize=10, color='white')
+    
+    st.pyplot(fig)
 
 # Done The density of employment rate for different geographical areas
 elif visualization_option == "The density of employment rate for different geographical areas":
