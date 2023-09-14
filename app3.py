@@ -15,8 +15,6 @@ from streamlit_folium import st_folium
 def load_data():
     canada = pd.read_csv('Canada_Province_Unemployment.csv')
     gdf = gpd.read_file('canada.geojson')
-    doggo = 
-
     return canada, gdf
 
 canada, gdf = load_data()
