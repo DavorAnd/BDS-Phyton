@@ -7,15 +7,19 @@ import seaborn as sns
 import geopandas as gpd
 import folium
 from folium.plugins import MarkerCluster
+from streamlit_folium import st_folium
+
 
 # Load the datasets
 @st.cache_data
 def load_data():
     canada = pd.read_csv('Canada_Province_Unemployment.csv')
-    gdf = gpd.read_file('https://raw.githubusercontent.com/aaubs/ds-master/main/data/geopandas_data/Neighborhood_Map_Atlas_Districts.geojson')
+    gdf = gpd.read_file('canada.geojson')
+
     return canada, gdf
 
 canada, gdf = load_data()
+
 
 st.title("Public showcase of lazy Canadians")
 st.sidebar.header("Filters 📊")
@@ -35,6 +39,7 @@ with st.expander("**How to Use the Dashboard** 📚"):
     st.markdown("""
     1. **Filter Data** - Use the sidebar filters to narrow down specific datasets.
     2. **Visualize Data** - From the dropdown, select a visualization type to view patterns.
+    3. **Map** - The map is not depending on the sidebar filters. To see the map, at least one age group and one geographical area must be chosen in the sidebar, though.
     """)
 # age groups
 age_group_cat = {
@@ -64,6 +69,17 @@ filtered_df = filtered_df[filtered_df['GEO'].isin(selected_area)]
 
 
 
+filtered_canada2 =filtered_df[filtered_df['REF_DATE'].str.endswith("12")]
+
+alt.Chart(filtered_canada2).mark_line().encode(
+    y = 'Unemployment rate:Q',
+    x = 'REF_DATE:T',
+    color=('GEO:N')
+).properties(
+    width=600,
+    height=300,
+    
+)
 
 # Dropdown to select the type of visualization - make a name for each chart.
 
@@ -74,27 +90,98 @@ filtered_df = filtered_df[filtered_df['GEO'].isin(selected_area)]
 # Dropdown to select the type of visualization - make a name for each chart.
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 
-    ["Unemployment by Age Group",
-     "The density of employment rate for different age groups", 
-     "The density of employment rate for different geographical areas"] #stacked bar chart    
+    ["The density of employment rate for different age groups", 
+     "The density of employment rate for different geographical areas", 
+     "Development of Unemployment by Geographical Area"] #stacked bar chart    
 )
 
 
-if visualization_option == "Unemployment by Age Group":
-    # Bar chart for unemployment by age group
-    chart = alt.Chart(filtered_df).mark_bar().encode(
-        x='Age group',
-        y='count()',
-        color='Unemployment rate'
-    ).properties(
-        title='Unemployment by Age Group'
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-elif visualization_option == "The density of employment rate for different age groups":
+if visualization_option == "The density of employment rate for different age groups":
     plt.figure(figsize=(10, 6))
     sns.kdeplot(data=filtered_df, x='Employment rate', hue='Age group', fill=True, palette='Set2')
     plt.xlabel('Employment rate')
     plt.ylabel('Density')
     plt.title('The density of employment rate for different age groups')
     st.pyplot(plt)
+
+    # Done ---Development of unemployment by graphical area plot
+elif visualization_option == "Development of Unemployment by Geographical Area":
+
+    filtered_canada2 =filtered_df[filtered_df['REF_DATE'].str.endswith("12")]
+
+    chart2 = alt.Chart(filtered_canada2).mark_line().encode(
+    y = 'Unemployment rate:Q',
+    x = 'REF_DATE:T',
+    color=('GEO:N')
+    ).properties(
+    width=600,
+    height=300,
+    )
+    st.altair_chart(chart2, use_container_width=True)
+
+
+# Done The density of employment rate for different geographical areas
+elif visualization_option == "The density of employment rate for different geographical areas":
+    plt.figure(figsize=(10, 6))
+    sns.kdeplot(data=filtered_df, x='Employment rate', hue='GEO', fill=True, palette='Set2')
+    plt.xlabel('Employment rate')
+    plt.ylabel('Density')
+    plt.title('The density of employment rate for different geographical areas')
+    st.pyplot(plt)
+    
+
+
+
+
+
+# The Maps monster
+    st.header("Unemployment Map")
+with st.expander("**How to Use the Map** 🌎"):
+    st.markdown("""
+    Click on the markers on the map to explore the employment rate, participation rate, and unemployment rate for different age groups in the different states of Canada. All data in the map is from January 2023.
+    Zoom in on an area till you get the blue dots. These you can click, and a textbox will popup with information about the population of the state. 
+    """)
+
+    #Create GeoDataFrame
+    gdf_canada = gpd.GeoDataFrame(canada, geometry=gpd.points_from_xy(canada['Longitude'], canada['Latitude']))
+    gdf_canada.crs = "EPSG:4326"
+
+    gdf_canada = gdf_canada.to_crs("EPSG:4326")
+
+    pd.to_numeric(gdf_canada['Latitude'])
+    pd.to_numeric(gdf_canada['Longitude'])
+
+    df_filtered = gdf_canada[gdf_canada['REF_DATE'] == '2023-01']
+    df_filtered = df_filtered[df_filtered['Age group'] != '15 to 64 years']
+    df_filtered = df_filtered[df_filtered['Age group'] != '25 years and over']
+    df_filtered = df_filtered[df_filtered['Age group'] != '15 years and over']
+
+    m = folium.Map(location=[52.7362, -88.4568], zoom_start=3, tiles="CartoDB positron")
+
+    # Create a marker cluster
+    marker_cluster = MarkerCluster().add_to(m)
+
+    # Loop through each police shooting and add it as a circle on the map within the marker cluster
+    for _, row in df_filtered.iterrows():
+        # Creating a pop-up message with some key information about the incident
+        popup_content = f"""
+        State: {row['GEO']}<br>
+        Age group: {row['Age group']}<br>
+        Population count: {row['Population']}<br>
+        Employment rate: {row['Employment rate']}<br>
+        Participation rate: {row['Participation rate']}<br>
+        Unemployment rate: {row['Unemployment rate']}<br>
+        """
+        popup = folium.Popup(popup_content, max_width=300)
+            
+        folium.Circle(
+            location=[row['Latitude'], row['Longitude']],
+            radius=15,
+            color='blue',
+            fill=True,
+            fill_color='blue',
+            fill_opacity=0.4,
+            popup=popup
+        ).add_to(marker_cluster)
+
+    st_folium(m, width=725, height=300)
