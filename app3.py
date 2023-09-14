@@ -44,11 +44,12 @@ age_group_cat = {
       'All Ages' : ['15 years and over']
 }
 #Selection for age groups in the sidebar
-selected_age_group = st.sidebar.multiselect("Select Age Groups 🕰️",list(age_group_cat.keys()))
+selected_age_group = st.sidebar.selectbox("Select Age Groups 🕰️",list(age_group_cat.keys()))
 if not selected_age_group:
     st.warning("Please select an age group from the sidebar ⚠️")
     st.stop()
-filtered_df =canada[canada['Age group'].isin([age for category in selected_age_group for age in age_group_cat[category]])]
+selected_age_group_list = age_group_cat[selected_age_group]
+filtered_df =canada[canada['Age group'].isin(selected_age_group_list)]
 
 # Geo selection
 
@@ -58,16 +59,26 @@ if not selected_area:
     st.warning("Please select a geografical area from the sidebar ⚠️")
     st.stop()
 filtered_df = filtered_df[filtered_df['GEO'].isin(selected_area)]
+#Type of employment 
+
+
+
 
 
 # Dropdown to select the type of visualization - make a name for each chart.
-st.header("Unemployment Analysis 📊")
+
+
+#Work until here -- missing the types of plots and polt code---
+
+
+# Dropdown to select the type of visualization - make a name for each chart.
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 
-    ["Unemployment by Age Group"]     
+    ["Unemployment by Age Group",
+     "The density of employment rate for different age groups", 
+     "The density of employment rate for different geographical areas"] #stacked bar chart    
 )
 
-#Work until here -- missing the types of plots and polt code
 
 if visualization_option == "Unemployment by Age Group":
     # Bar chart for unemployment by age group
@@ -80,22 +91,10 @@ if visualization_option == "Unemployment by Age Group":
     )
     st.altair_chart(chart, use_container_width=True)
 
-gdf_canada = gpd.GeoDataFrame(canada, geometry=gpd.points_from_xy(canada['Longitude'], canada['Latitude']))
-gdf_canada.crs = "EPSG:4326"
-
-m = folium.Map(location=[52.7362, -88.4568], zoom_start=11, tiles="CartoDB positron")
-    # Create a marker cluster
-marker_cluster = MarkerCluster().add_to(m)
-
-    # Loop through each police shooting and add it as a circle on the map within the marker cluster
-for _, row in gdf_canada.iterrows():
-    folium.Circle(
-        location=[row['Latitude'], row['Longitude']],
-        radius=15,
-        color='blue',
-        fill=True,
-        fill_color='blue',
-        fill_opacity=0.4,
-    ).add_to(marker_cluster)
-
-st_folium(m)
+elif visualization_option == "The density of employment rate for different age groups":
+    plt.figure(figsize=(10, 6))
+    sns.kdeplot(data=filtered_df, x='Employment rate', hue='Age group', fill=True, palette='Set2')
+    plt.xlabel('Employment rate')
+    plt.ylabel('Density')
+    plt.title('The density of employment rate for different age groups')
+    st.pyplot(plt)
