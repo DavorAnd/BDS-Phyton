@@ -29,9 +29,15 @@ st.markdown("""
 """)
 with st.expander("📊 **Objective**"):
                  st.markdown("""
-At the heart of this dashboard the data about data about Canadinas with emphasis on lazy part of population, and hope that it shows what it should :
-- Are there different unemployment rates for the different geografical areas of Canada?
-- How has the unemployment rate developed over time?
+Ever wondered if Canadians are embracing the fine art of lounging around in their picturesque locales? 🇨🇦  Well, we've got the scoop for you! Dive into our vibrant dashboard, where we unravel the mysteries surrounding the "chill" segment of the Canadian population. 🍁
+In this thrilling saga, we embark on a journey to discover:
+🌎 Are there pockets in Canada's HUGE and diverse landscapes where people are mastering the art of relaxation a bit more than others? Let's explore the unemployment rates across different geographical zones of Canada!
+
+📈 Buckle up as we time travel through the ridiculously big (almost like 🇨🇦) data set to history to witness the evolution of unemployment rates in Canada.
+
+Join us in this exciting adventure as we uncover the secrets behind the laid-back Canadians, one statistic at a time! Let's find out if Canadians are really leaning into the leisure life or if something else is behind it (law from 2018.). 🍁
+
+Stay tuned!
 """
 )
                            
@@ -163,7 +169,7 @@ elif visualization_option == "The density of employment rate for different geogr
 
 # The Maps monster
     st.header("Unemployment Map")
-with st.expander("**How to Use the Map** 🌎"):
+with st.expander("**How to Use the Map below** 🌎"):
     st.markdown("""
     Click on the markers on the map to explore the employment rate, participation rate, and unemployment rate for different age groups in the different states of Canada. All data in the map is from January 2023.
     Zoom in on an area till you get the blue dots. These you can click, and a textbox will popup with information about the population of the state. 
