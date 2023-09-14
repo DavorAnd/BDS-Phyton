@@ -29,7 +29,7 @@ st.markdown("""
 """)
 with st.expander("📊 **Objective**"):
                  st.markdown("""
-Ever wondered if Canadians are embracing the fine art of lounging around in their picturesque locales? 🇨🇦  Well, we've got the scoop for you! Dive into our vibrant dashboard, where we unravel the mysteries surrounding the "chill" segment of the Canadian population. 🍁
+Ever wondered if Canadians are embracing the fine art of lounging around in their picturesque locales? 🇨🇦   Well, we've got the scoop for you! Dive into our vibrant dashboard, where we unravel the mysteries surrounding the "chill" segment of the Canadian population. 🍁
 In this thrilling saga, we embark on a journey to discover:
 🌎 Are there pockets in Canada's HUGE and diverse landscapes where people are mastering the art of relaxation a bit more than others? Let's explore the unemployment rates across different geographical zones of Canada!
 
@@ -47,6 +47,7 @@ with st.expander("**How to Use the Dashboard** 📚"):
     2. **Visualize Data** - From the dropdown, select a visualization type to view patterns.
     3. **Map** - The map is not depending on the sidebar filters. To see the map, at least one age group and one geographical area must be chosen in the sidebar, though.
     """)
+
 # age groups
 age_group_cat = {
       'Young':['15 to 24 years','15 to 19 years','20 to 24 years'],
@@ -218,3 +219,9 @@ with st.expander("**How to Use the Map below** 🌎"):
         ).add_to(marker_cluster)
 
     st_folium(m, width=725, height=300)
+
+# the end 
+
+with st.expander("**Example of lazy Canadians in their natural habitat** 📚"):
+    st.markdown("**Doggo** (doggo.jpg)")
+
