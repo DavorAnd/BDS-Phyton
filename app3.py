@@ -44,7 +44,7 @@ text2 = """<p>We know Americans love their extensive instructions (you should se
                <p> 🔍 Filter Data - Use the sidebar filters to zoom in on the juicy details and uncover the secrets hidden in specific datasets. It's time to narrow down your investigation! It's like searching for gold in the Yukon, but with data!<p>
                 <p>🎨 Visualize Data - Choose your tool from the dropdown menu and paint a picture with data! Select a visualization type to spot exciting patterns and trends.<p>"""                  
 with st.expander("**How to Use the Dashboard** 📚"):
-    st.markdown(text2)
+    st.markdown(text2, unsafe_allow_html=True)
 
 # age groups
 age_group_cat = {
