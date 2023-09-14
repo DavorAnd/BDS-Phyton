@@ -42,10 +42,10 @@ Stay tuned!
                            
 with st.expander("**How to Use the Dashboard** 📚"):
     st.markdown("""
-We know Americans love their extensive instructions (you should see the manual for a toaster!), but Canadians like to keep things simple and sweet so here we go:
-                🗺️ Map - Ready for a treasure hunt, eh? The map operates on its own magical rules (insert a joke about USA), not influenced by the sidebar filters. To embark on this journey, make sure to select at least one age group and one geographical area in the sidebar. Let the exploration begin!
-                🔍 Filter Data - Use the sidebar filters to zoom in on the juicy details and uncover the secrets hidden in specific datasets. It's time to narrow down your investigation! It's like searching for gold in the Yukon, but with data!
-                🎨 Visualize Data - Choose your tool from the dropdown menu and paint a picture with data! Select a visualization type to spot exciting patterns and trends.
+<p>We know Americans love their extensive instructions (you should see the manual for a toaster!), but Canadians like to keep things simple and sweet so here we go:<p>
+               <p> 🗺️ Map - Ready for a treasure hunt, eh? The map operates on its own magical rules (insert a joke about USA), not influenced by the sidebar filters. To embark on this journey, make sure to select at least one age group and one geographical area in the sidebar. Let the exploration begin!<p>
+               <p> 🔍 Filter Data - Use the sidebar filters to zoom in on the juicy details and uncover the secrets hidden in specific datasets. It's time to narrow down your investigation! It's like searching for gold in the Yukon, but with data!<p>
+                <p>🎨 Visualize Data - Choose your tool from the dropdown menu and paint a picture with data! Select a visualization type to spot exciting patterns and trends.<p>
 
     """)
 
