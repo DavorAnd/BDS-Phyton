@@ -6,4 +6,4 @@ seaborn==0.12.2
 streamlit==1.26.0
 folium==0.13.0
 folium.plugins==0.13.0
-streamlit_folium == 0.13.0
+streamlit_folium ==0.13.0
