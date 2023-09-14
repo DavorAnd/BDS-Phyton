@@ -15,6 +15,7 @@ from streamlit_folium import st_folium
 def load_data():
     canada = pd.read_csv('Canada_Province_Unemployment.csv')
     gdf = gpd.read_file('canada.geojson')
+    doggo = 
 
     return canada, gdf
 
@@ -223,5 +224,5 @@ with st.expander("**How to Use the Map below** 🌎"):
 # the end 
 
 with st.expander("**Example of lazy Canadians in their natural habitat** 📚"):
-    st.markdown("![Doggo](file://doggo.png)")
+   st.image('doggo.png', caption="Doggo", use_column_width=True)
 
