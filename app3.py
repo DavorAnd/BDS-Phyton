@@ -134,7 +134,7 @@ elif visualization_option == "Employment and Unemployment Percentage by Province
     ax.set_xticklabels(grouped_data['GEO'], rotation=90, fontsize=12)
     plt.xlim(min(pos)-width, max(pos)+width*4)
     plt.ylim([0, 100])
-    plt.legend(loc='upper left', fontsize=12)
+    plt.legend(loc='upper right', fontsize=12)
     plt.grid(axis='y')
     plt.axhline(y=50, color='gray', linestyle='--', linewidth=0.7)
     
@@ -143,12 +143,7 @@ elif visualization_option == "Employment and Unemployment Percentage by Province
         plt.text(i, val/2, f"{val:.2f}%", ha='center', va='center', fontsize=10, color='white')
         plt.text(i, val + grouped_data['Unemployment_Percentage'][i]/2, f"{grouped_data['Unemployment_Percentage'][i]:.2f}%", ha='center', va='center', fontsize=10, color='white')
     
-    ax.set_xlabel("X-axis Label", labelpad=10)
-    ax.xaxis.set_label_coords(1.05, -0.05)  # Adjust the position as needed
-
-    # Move the y-axis label to the side
-    ax.set_ylabel("Y-axis Label", labelpad=10)
-    ax.yaxis.set_label_coords(-0.1, 1.05)  # Adjust the position as needed
+ 
     
     st.pyplot(fig)
 
